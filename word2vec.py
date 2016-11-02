@@ -63,12 +63,21 @@ def rev2Sent(review, tokenizer, remove_stopwords=False):
     # print "Sentences:", sentences
     return sentences
 
-sentences = []
-
+sentences2 = []
 print "Parsing sentences from the training set"
 for i in trainingData["review"]:
-    sentences += rev2Sent(i, tokenizer)
+    sentences2 += rev2Sent(i.decode("utf-8"), tokenizer)
 
 print "Parsing sentences from the unlabeled training data"
 for i in unlabeledTrainingData["review"]:
-    sentences += rev2Sent(i, tokenizer)
+    sentences2 += rev2Sent(i.decode("utf-8"), tokenizer)
+
+print "Total Number of Sentences:",len(sentences2)
+# Total Number of Sentences: 795538
+
+print "Print Sentence 0",sentences2[0]
+# Print Sentence 0 [u'with', u'all', u'this', u'stuff', u'going', u'down', u'at', u'the', u'moment', u'with', u'mj', u'i', u've', u'started', u'listening', u'to', u'his', u'music', u'watching', u'the', u'odd', u'documentary', u'here', u'and', u'there', u'watched', u'the', u'wiz', u'and', u'watched', u'moonwalker', u'again']
+
+
+print "Print Sentence 1",sentences2[1]
+# Print Sentence 1 [u'maybe', u'i', u'just', u'want', u'to', u'get', u'a', u'certain', u'insight', u'into', u'this', u'guy', u'who', u'i', u'thought', u'was', u'really', u'cool', u'in', u'the', u'eighties', u'just', u'to', u'maybe', u'make', u'up', u'my', u'mind', u'whether', u'he', u'is', u'guilty', u'or', u'innocent']
