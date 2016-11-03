@@ -5,6 +5,8 @@ import re
 import nltk.data
 from nltk.corpus import stopwords
 from nltk.tokenize import PunktSentenceTokenizer
+import logging
+from gensim.models import word2vec
 
 trainingData = pd.read_csv("labeledTrainData.tsv", header = 0, delimiter="\t", quoting=3)
 testData = pd.read_csv("testData.tsv", header=0, delimiter="\t", quoting=3)
@@ -81,3 +83,30 @@ print "Print Sentence 0",sentences2[0]
 
 print "Print Sentence 1",sentences2[1]
 # Print Sentence 1 [u'maybe', u'i', u'just', u'want', u'to', u'get', u'a', u'certain', u'insight', u'into', u'this', u'guy', u'who', u'i', u'thought', u'was', u'really', u'cool', u'in', u'the', u'eighties', u'just', u'to', u'maybe', u'make', u'up', u'my', u'mind', u'whether', u'he', u'is', u'guilty', u'or', u'innocent']
+
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',\
+    level=logging.INFO)
+
+# dimensionality of the word vector
+num_features = 300
+min_word_count = 40
+# Threads that run in parallel
+num_workers = 4
+# Context window(co-occurence matrix)
+context = 10
+# Downsampling
+downsampling = 1e-3
+
+# We initialize and train the word2vec model.
+# from gensim.models import word2vec
+print "Training.."
+model = word2vec.Word2Vec(sentences2, workers = num_workers, size = num_features, min_count = min_word_count, window = context, sample = downsampling)
+
+# Init_sims makes the model more memory efficient.
+model.init_sims(replace = True)
+
+# The model can then be saved an used later!
+model_name = "300features_10context"
+model.save(model_name)
+
+model.doesnt_match("man woman child kitchen".split())
